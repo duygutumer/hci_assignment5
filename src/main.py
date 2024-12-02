@@ -8,23 +8,60 @@ import tkinter as tk
 cap = cv2.VideoCapture(0)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
-mp_draw = mp.solutions.drawing_utils
+mp_drawing = mp.solutions.drawing_utils
+
+#Screen dimensions
+screen_width = 1280
+screen_height = 720
+
+#For Detecting pinch smoothly
+pinch_wait = 1.0 
+last_pinch_time = 0
+
+def handle_gesture_controls(hand_landmarks):
+    """Handle gestures """
+    global selected_song_index, previous_x, swipe_target, currentMiddleIndex
+    global last_pinch_time, state, last_played_song_index
+
+    thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+    index_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+
+    # Convert to pixel positions
+    x1, y1 = int(thumb_tip.x * screen_width), int(thumb_tip.y * screen_height)
+    x2, y2 = int(index_finger_tip.x * screen_width), int(index_finger_tip.y * screen_height)
+
+    #Distance btw thumb and index finger
+    pinch_distance = math.hypot(x2 - x1, y2 - y1)
+
+    current_time = time.time()
+
+    #If Pinch is detected
+    if pinch_distance < 40: 
+        if current_time - last_pinch_time > pinch_wait: 
+            print("Pinch is detected.")
+              
+            last_pinch_time = current_time 
+        return  
 
 while cap.isOpened():
-    success, image = cap.read()
+    success, frame = cap.read()
     if not success:
         break
 
-    #Flip the image horizontally
-    image = cv2.flip(image, 1)
-    results = hands.process(image)
+    frame = cv2.flip(frame, 1)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    result = hands.process(frame_rgb)
 
-    #Draw the hand landmarks
-    if results.multi_hand_landmarks:
-        for hand_landmarks in results.multi_hand_landmarks:
-            mp_draw.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+    if result.multi_hand_landmarks:
+        for hand_landmarks in result.multi_hand_landmarks:
+            mp_drawing.draw_landmarks(
+                frame, 
+                hand_landmarks, 
+                mp_hands.HAND_CONNECTIONS
+            )
+            handle_gesture_controls(hand_landmarks)
 
-    cv2.imshow('A5', image)
+    cv2.imshow('A5', frame)
     if cv2.waitKey(1) & 0xFF == 27:
         break
 
