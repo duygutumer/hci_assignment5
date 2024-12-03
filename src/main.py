@@ -18,7 +18,7 @@ screen_height = 720
 pinch_wait = 1.0 
 last_pinch_time = 0
 
-# For detecting horizontal swipe
+#For detecting horizontal swipe
 previous_x = None  
 
 def handle_gesture_controls(hand_landmarks):
