@@ -18,6 +18,9 @@ screen_height = 720
 pinch_wait = 1.0 
 last_pinch_time = 0
 
+# For detecting horizontal swipe
+previous_x = None  
+
 def handle_gesture_controls(hand_landmarks):
     """Handle gestures """
     global selected_song_index, previous_x, swipe_target, currentMiddleIndex
@@ -42,6 +45,20 @@ def handle_gesture_controls(hand_landmarks):
               
             last_pinch_time = current_time 
         return  
+        # Calculate horizontal swipe movement for scrolling
+    if previous_x is None:
+        previous_x = x2  # Initialize previous_x if not set
+        return
+
+    delta_x = x2 - previous_x  # difference of current x with x-axis of previous frame
+    previous_x = x2  #update previous_x with current frame
+
+    # Detect swipe gesture
+    if abs(delta_x) > 50:  # Swipe threshold = 50, most optimal for group's hand sizes and smooth gesture
+        if delta_x > 0: # Swipe Right
+            print("Right Swipe")
+        else:  # Swipe Left
+	        print("Left Swipe")
 
 while cap.isOpened():
     success, frame = cap.read()
