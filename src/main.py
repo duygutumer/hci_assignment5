@@ -43,16 +43,16 @@ def generate_positions(album_count):
 
 # Album data
 albums = [
-    {"cover": "./album1.png", "name": "name", "artist": "artist1", 
-     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
-    {"cover": "./album2.png", "name": "name2", "artist": "artist2", 
-      "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
-    {"cover": "./album3.png", "name": "name3", "artist": "artist3", 
-     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
-    {"cover": "./album4.png", "name": "name4", "artist": "artist4", 
-     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
-    {"cover": "./album5.png", "name": "name5", "artist": "artist5", 
-     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
+    {"cover": "./Duman.jpg", "name": "Belki Alisman Lazim", "artist": "Duman", 
+     "songs": ["./Sor Bana Pisman miyim.mp3", "./Kufi.mp3", "./Senden Daha Guzel.mp3", "./Kolay Degildir.mp3", "./Yurek.mp3"]},
+    {"cover": "./BarisManco.jpg", "name": "Baris Mancho", "artist": "Baris Manco", 
+      "songs": ["./Alla Beni Pulla Beni.mp3", "./Arkadasim Esek.mp3", "./Gulpembe.mp3", "./Sari Cizmeli Mehmet Aga.mp3", "./Yaz Dostum.mp3"]},
+    {"cover": "./EdSheeran.jpg", "name": "Perfect", "artist": "Ed Sheeran", 
+     "songs": ["./Shape of You.mp3", "./Shivers.mp3", "./Photograph.mp3", "./Perfect.mp3", "./Thinking Out Loud.mp3"]},
+    {"cover": "./Ottoman.jpg", "name": "Osmanli Marslari", "artist": "Anonim", 
+     "songs": ["./Ceddin Deden.mp3", "./Ey Sanli Ordu Ey Sanli Asker.mp3", "./Hucum Marsi.mp3", "./Gafil Ne Bilir.mp3", "./Yelkenler Bicilecek.mp3"]},
+    {"cover": "./ZekiMuren.jpg", "name": "Sanat Gunesi", "artist": "Zeki Muren", 
+     "songs": ["./Ah bu sarkilarin gozu kor olsun.mp3", "./Gitme Sana Muhtacim.mp3", "./Sorma Ne Haldeyim.mp3", "./Ben Zeki Muren.mp3", "./Seviyorum iste var mi diyecegin.mp3"]},
 ]
 
 # Load and resize album covers
