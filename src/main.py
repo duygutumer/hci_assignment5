@@ -27,7 +27,43 @@ previous_x = None
 
 #State (for album page and music list page)
 state = "NORMAL" #first page (albums list) as default
+shift_x = 0  # Horizontal shift for smooth transitions
+# Album box settings
+smallDisplay = (100, 100)
 
+def generate_positions(album_count):
+    """Calculate positions of album covers based on shift_x."""
+    box_width = screen_width // (album_count + 1)  # Equal spacing
+    positions = []
+    for i in range(album_count):
+        x = (i * box_width) + shift_x  # Add horizontal shift
+        y = screen_height // 2 - 150
+        positions.append({"pos": (x, y), "size": smallDisplay, "color": (0, 255, 0)})
+    return positions
+
+# Album data
+albums = [
+    {"cover": "./album1.png", "name": "name", "artist": "artist1", 
+     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
+    {"cover": "./album2.png", "name": "name2", "artist": "artist2", 
+      "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
+    {"cover": "./album3.png", "name": "name3", "artist": "artist3", 
+     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
+    {"cover": "./album4.png", "name": "name4", "artist": "artist4", 
+     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
+    {"cover": "./album5.png", "name": "name5", "artist": "artist5", 
+     "songs": ["./song1.mp3", "./song2.mp3", "./song3.mp3", "./song4.mp3", "./song5.mp3"]},
+]
+
+# Load and resize album covers
+album_covers = [cv2.imread(album["cover"]) for album in albums]
+cover_images_resized = []
+for i, cover in enumerate(album_covers):
+    if cover is None:
+        print(f"Error loading image: {albums[i]['cover']}")
+    else:
+        cover_images_resized.append(cv2.resize(cover, (120, 120)))
+        
 def handle_gesture_controls(hand_landmarks):
     """Handle gestures """
     global selected_song_index, previous_x, swipe_target, currentMiddleIndex
@@ -86,9 +122,37 @@ while cap.isOpened():
             )
             handle_gesture_controls(hand_landmarks)
 
+    # Generate dynamic positions for album covers
+    positions = generate_positions(len(albums))
+
+    # Overlay album covers
+    for i, cover in enumerate(cover_images_resized):
+        x, y = positions[i]["pos"]
+        w, h = positions[i]["size"]
+        cover_resized = cv2.resize(cover, (w, h))
+
+        if x + w > 0 and x < screen_width:  # Draw only visible albums
+            # Ensure the dimensions are valid and clip to the frame bounds
+            frame_h, frame_w, _ = frame.shape
+            x_end = min(x + w, frame_w)
+            y_end = min(y + h, frame_h)
+            x_start = max(x, 0)
+            y_start = max(y, 0)
+
+            # Calculate the region of the cover that fits within the visible frame
+            cover_start_x = max(0, -x)
+            cover_start_y = max(0, -y)
+            cover_end_x = cover_start_x + (x_end - x_start)
+            cover_end_y = cover_start_y + (y_end - y_start)
+
+            # Only overlay if dimensions are valid
+            if x_start < x_end and y_start < y_end:
+                frame[y_start:y_end, x_start:x_end] = cover_resized[cover_start_y:cover_end_y, cover_start_x:cover_end_x]
+
     cv2.imshow('A5', frame)
     if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
 cv2.destroyAllWindows()
+
