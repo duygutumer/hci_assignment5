@@ -1,14 +1,18 @@
 import cv2
-import numpy as np
+import os
 import time
 import mediapipe as mp
 import math as math
 import tkinter as tk
 
+# Suppress TensorFlow and MediaPipe warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 cap = cv2.VideoCapture(0)
+
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands()
 mp_drawing = mp.solutions.drawing_utils
+hands = mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.7)
 
 #Screen dimensions
 screen_width = 1280
@@ -20,6 +24,9 @@ last_pinch_time = 0
 
 #For detecting horizontal swipe
 previous_x = None  
+
+#State (for album page and music list page)
+state = "NORMAL" #first page (albums list) as default
 
 def handle_gesture_controls(hand_landmarks):
     """Handle gestures """
@@ -45,9 +52,10 @@ def handle_gesture_controls(hand_landmarks):
               
             last_pinch_time = current_time 
         return  
-        # Calculate horizontal swipe movement for scrolling
+    
+    #Calculate horizontal swipe movement for scrolling
     if previous_x is None:
-        previous_x = x2  # Initialize previous_x if not set
+        previous_x = x2 
         return
 
     delta_x = x2 - previous_x  # difference of current x with x-axis of previous frame
