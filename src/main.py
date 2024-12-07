@@ -1,3 +1,5 @@
+import pygame
+pygame.mixer.init()
 import cv2
 import os
 import time
@@ -54,6 +56,21 @@ albums = [
     {"cover": "./ZekiMuren.jpg", "name": "Sanat Gunesi", "artist": "Zeki Muren", 
      "songs": ["./Ah bu sarkilarin gozu kor olsun.mp3", "./Gitme Sana Muhtacim.mp3", "./Sorma Ne Haldeyim.mp3", "./Ben Zeki Muren.mp3", "./Seviyorum iste var mi diyecegin.mp3"]},
 ]
+
+def play_music(album, song_index):
+    """Play the selected song."""
+    pygame.mixer.music.stop()
+    song_path = album["songs"][song_index]
+    if os.path.exists(song_path):
+        pygame.mixer.music.load(song_path)
+        pygame.mixer.music.play()
+        print(f"Playing: {song_path}")
+    else:
+        print(f"Error: Song file not found: {song_path}")
+
+def stop_music():
+    """Stop the currently playing music."""
+    pygame.mixer.music.stop()
 
 # Load and resize album covers
 album_covers = [cv2.imread(album["cover"]) for album in albums]
