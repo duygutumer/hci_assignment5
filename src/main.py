@@ -104,6 +104,14 @@ def handle_gesture_controls(hand_landmarks):
         else:  # Swipe Left
 	        print("Left Swipe")
 
+def update_shift():
+    global shift_x
+    if shift_x != swipe_target:
+        step = swipe_speed if swipe_target > shift_x else -swipe_speed
+        shift_x += step
+        if abs(shift_x - swipe_target) < swipe_speed:
+            shift_x = swipe_target
+
 while cap.isOpened():
     success, frame = cap.read()
     if not success:
