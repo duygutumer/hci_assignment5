@@ -65,6 +65,7 @@ for i, cover in enumerate(album_covers):
         cover_images_resized.append(cv2.resize(cover, (120, 120)))
         
 def handle_gesture_controls(hand_landmarks):
+    update_shift()
     """Handle gestures """
     global selected_song_index, previous_x, swipe_target, currentMiddleIndex
     global last_pinch_time, state, last_played_song_index
@@ -129,6 +130,7 @@ while cap.isOpened():
                 mp_hands.HAND_CONNECTIONS
             )
             handle_gesture_controls(hand_landmarks)
+    update_shift()
 
     # Generate dynamic positions for album covers
     positions = generate_positions(len(albums))
