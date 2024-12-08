@@ -175,7 +175,16 @@ def handle_gesture_controls(hand_landmarks):
                     swipe_target -= screen_width // len(albums)  # Move left
                     print(f"Swiped left. Current album index: {currentMiddleIndex}")
                
+    song_y_position = int(index_finger_tip.y * screen_height) #y-coordinate pixel position of index finger tip                   
 
+    playlist_start_y = screen_height // 2 - 200  #Starting y-position of the playlist
+    song_height = 40  #Approximatiately pixel height of each song in the list
+
+     # Determine the song index based on the y-position
+    song_index = (song_y_position - playlist_start_y) // song_height
+    if 0 <= song_index < len(albums[currentMiddleIndex]["songs"]):  #ensuring movement is in valid range
+        selected_song_index = song_index
+        print(f"Selected song: {albums[currentMiddleIndex]['songs'][selected_song_index]}")
 
 def update_shift():
     global shift_x
