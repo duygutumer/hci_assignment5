@@ -160,11 +160,15 @@ def handle_gesture_controls(hand_landmarks):
     previous_x = x2  #update previous_x with current frame
 
     # Detect swipe gesture
-    if abs(delta_x) > 50:  # Swipe threshold = 50, most optimal for group's hand sizes and smooth gesture
-        if delta_x > 0: # Swipe Right
-            print("Right Swipe")
-        else:  
-	        print("Left Swipe")
+    if abs(delta_x) > 50:   # Swipe threshold = 50, most optimal for group's hand sizes and smooth gesture
+        if delta_x > 0:  
+            if currentMiddleIndex > 0: #swipe right only when not at the start of the album
+                currentMiddleIndex -= 1
+                print(f"Swiped right. Current album index: {currentMiddleIndex}")
+        else: 
+            if currentMiddleIndex < len(albums) - 1: #swipe left only when not at the end of the album
+               currentMiddleIndex += 1
+               print(f"Swiped left. Current album index: {currentMiddleIndex}")
 
 def update_shift():
     global shift_x
