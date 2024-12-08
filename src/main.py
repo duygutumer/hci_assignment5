@@ -91,6 +91,14 @@ def stop_music():
     """Stop the currently playing music."""
     pygame.mixer.music.stop()
 	
+def draw_playlist(frame, album, selected_song_index):
+    x, y = screen_width // 2 - 400, screen_height // 2 - 200
+    cv2.putText(frame, f"{album['name']} - {album['artist']}", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    # Draw songs
+    for i, song in enumerate(album["songs"]):
+        color = (0, 255, 0) if i == selected_song_index else (255, 255, 255)
+        cv2.putText(frame, song, (x, y + 50 + i * 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 1)
+	
 def handle_gesture_controls(hand_landmarks):
     """Handle gestures """
     global selected_song_index, previous_x, swipe_target, currentMiddleIndex
@@ -263,5 +271,6 @@ while cap.isOpened():
         break
 
 cap.release()
+pygame.mixer.music.stop()
 cv2.destroyAllWindows()
 
