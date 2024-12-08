@@ -33,6 +33,10 @@ shift_x = 0  # Horizontal shift for smooth transitions
 # Album box settings
 smallDisplay = (100, 100)
 
+swipe_target = 0  # Target shift value for smooth transitions
+swipe_speed = 20  # Speed of the scrolling transition
+shift_x = 0 
+
 def generate_positions(album_count):
     """Calculate positions of album covers based on shift_x."""
     box_width = screen_width // (album_count + 1)  # Equal spacing
@@ -57,6 +61,16 @@ albums = [
      "songs": ["./Ah bu sarkilarin gozu kor olsun.mp3", "./Gitme Sana Muhtacim.mp3", "./Sorma Ne Haldeyim.mp3", "./Ben Zeki Muren.mp3", "./Seviyorum iste var mi diyecegin.mp3"]},
 ]
 
+
+# Load and resize album covers
+album_covers = [cv2.imread(album["cover"]) for album in albums]
+cover_images_resized = []
+for i, cover in enumerate(album_covers):
+    if cover is None:
+        print(f"Error loading image: {albums[i]['cover']}")
+    else:
+        cover_images_resized.append(cv2.resize(cover, (120, 120)))
+	    
 def play_music(album, song_index):
     """Play the selected song."""
     pygame.mixer.music.stop()
@@ -71,18 +85,8 @@ def play_music(album, song_index):
 def stop_music():
     """Stop the currently playing music."""
     pygame.mixer.music.stop()
-
-# Load and resize album covers
-album_covers = [cv2.imread(album["cover"]) for album in albums]
-cover_images_resized = []
-for i, cover in enumerate(album_covers):
-    if cover is None:
-        print(f"Error loading image: {albums[i]['cover']}")
-    else:
-        cover_images_resized.append(cv2.resize(cover, (120, 120)))
-        
+	
 def handle_gesture_controls(hand_landmarks):
-    update_shift()
     """Handle gestures """
     global selected_song_index, previous_x, swipe_target, currentMiddleIndex
     global last_pinch_time, state, last_played_song_index
