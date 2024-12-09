@@ -44,6 +44,7 @@ shift_x = 0
 
 pinch_confirm_counter = 0
 pinch_cooldown = 0.5
+last_played_song_index = None 
 
 def generate_positions(album_count):
     """Calculate positions of album covers based on shift_x."""
