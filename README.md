@@ -3,7 +3,7 @@ HCI Assignment - 5
 
 In this project, a hand gesture-controlled PC-based music player which allows users to navigate through albums, select songs, and control playback with simple hand gestures, is implemented using Mediapipe. For this purpose, the main objectives are to design a user-friendly music player interface that allows users to control a music player without any physical contact and to ensure that hand movements are perceived very sensitively and accurately. 
 
-# Implementation Details
+## Implementation Details
 
 Tools and Libraries that are used are listed below:
 Python
